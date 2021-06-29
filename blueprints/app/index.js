@@ -48,10 +48,17 @@ module.exports = {
       blueprintOptions,
       embroider,
       lang: options.lang,
+      ciGithub: options.ciGithub,
     };
   },
 
   beforeInstall() {
+    if (this.locals.ciGithub) {
+      this.filesToRemove.push('.travis.yml')
+    } else {
+      this.filesToRemove.push('.github/workflows/ci.yml');
+    }
+
     const version = require('../../package.json').version;
     const prependEmoji = require('../../lib/utilities/prepend-emoji');
 

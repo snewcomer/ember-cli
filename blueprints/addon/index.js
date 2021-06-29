@@ -104,6 +104,12 @@ module.exports = {
   },
 
   beforeInstall() {
+    if (this.locals.ciGithub) {
+      this.filesToRemove.push('.travis.yml')
+    } else {
+      this.filesToRemove.push('.github/workflows/ci.yml');
+    }
+
     const version = require('../../package.json').version;
     const prependEmoji = require('../../lib/utilities/prepend-emoji');
 
@@ -158,6 +164,7 @@ module.exports = {
       blueprintOptions,
       embroider: false,
       lang: options.lang,
+      ciGithub: options.ciGithub,
     };
   },
 
