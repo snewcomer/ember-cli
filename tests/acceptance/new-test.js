@@ -573,7 +573,7 @@ describe('Acceptance: ember new', function () {
     });
 
     it('configurable CI', async function () {
-      await ember(['app', 'foo', '--ci-provider="github"']);
+      await ember(['new', 'foo', '--ci-provider="github"']);
 
       let namespace = 'app';
       let fixturePath = `${namespace}/defaults`;
