@@ -103,9 +103,9 @@ module.exports = {
     return new FileInfo(options);
   },
 
-  beforeInstall() {
+  beforeInstall(options) {
     // this may be extended to other providers.  Current option other than travis is github actions
-    if (this.locals.ciProvider !== 'travis') {
+    if (options.ciProvider !== 'travis') {
       this.filesToRemove.push('.travis.yml');
     } else {
       this.filesToRemove.push('.github/workflows/ci.yml');

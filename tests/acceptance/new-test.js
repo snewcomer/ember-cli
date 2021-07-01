@@ -573,20 +573,11 @@ describe('Acceptance: ember new', function () {
     });
 
     it('configurable CI', async function () {
-      await ember(['new', 'foo', '--ci-provider="github"']);
+      await ember(['new', 'foo', '--ci-provider=github', '--skip-npm', '--skip-bower', '--skip-git']);
 
-      let namespace = 'app';
-      let fixturePath = `${namespace}/defaults`;
+      let fixturePath = 'app/npm';
 
-      ['config/ember-try.js', '.github/workflows/ci.yml'].forEach((filePath) => {
-        expect(file(filePath)).to.equal(file(path.join(__dirname, '../fixtures', fixturePath, filePath)));
-      });
-
-      checkFileWithEmberCLIVersionReplacement(fixturePath, 'package.json');
-      checkFileWithEmberCLIVersionReplacement(fixturePath, 'tests/dummy/config/ember-cli-update.json');
-
-      // ember addon without --lang flag (default) has no lang attribute in dummy index.html
-      expect(file('tests/dummy/app/index.html')).to.contain('<html>');
+      expect(file('.github/workflows/ci.yml')).to.equal(file(path.join(__dirname, '../fixtures', fixturePath, '.github/workflows/ci.yml')));
     });
   });
 
