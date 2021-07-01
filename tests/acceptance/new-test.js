@@ -571,29 +571,23 @@ describe('Acceptance: ember new', function () {
       checkFileWithEmberCLIVersionReplacement(fixturePath, 'package.json');
       checkFileWithEmberCLIVersionReplacement(fixturePath, 'tests/dummy/config/ember-cli-update.json');
     });
-  });
 
-  it('configurable CI', async function () {
-    await ember(['app', 'foo', '--ci-github']);
+    it('configurable CI', async function () {
+      await ember(['app', 'foo', '--ci-provider="github"']);
 
-    let namespace = 'app';
-    let fixturePath = `${namespace}/defaults`;
+      let namespace = 'app';
+      let fixturePath = `${namespace}/defaults`;
 
-    [
-      'config/ember-try.js',
-      '.github/workflows/ci.yml',
-    ].forEach((filePath) => {
-      expect(file(filePath)).to.equal(file(path.join(__dirname, '../fixtures', fixturePath, filePath)));
+      ['config/ember-try.js', '.github/workflows/ci.yml'].forEach((filePath) => {
+        expect(file(filePath)).to.equal(file(path.join(__dirname, '../fixtures', fixturePath, filePath)));
+      });
+
+      checkFileWithEmberCLIVersionReplacement(fixturePath, 'package.json');
+      checkFileWithEmberCLIVersionReplacement(fixturePath, 'tests/dummy/config/ember-cli-update.json');
+
+      // ember addon without --lang flag (default) has no lang attribute in dummy index.html
+      expect(file('tests/dummy/app/index.html')).to.contain('<html>');
     });
-
-    checkFileWithEmberCLIVersionReplacement(fixturePath, 'package.json');
-    checkFileWithEmberCLIVersionReplacement(fixturePath, 'tests/dummy/config/ember-cli-update.json');
-
-    // option independent, but piggy-backing on an existing generate for speed
-    checkEslintConfig(namespace);
-
-    // ember addon without --lang flag (default) has no lang attribute in dummy index.html
-    expect(file('tests/dummy/app/index.html')).to.contain('<html>');
   });
 
   describe('verify dependencies', function () {

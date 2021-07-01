@@ -104,8 +104,8 @@ module.exports = {
   },
 
   beforeInstall() {
-    if (this.locals.ciGithub) {
-      this.filesToRemove.push('.travis.yml')
+    if (this.locals.ciProvider !== 'travis') {
+      this.filesToRemove.push('.travis.yml');
     } else {
       this.filesToRemove.push('.github/workflows/ci.yml');
     }
@@ -164,7 +164,7 @@ module.exports = {
       blueprintOptions,
       embroider: false,
       lang: options.lang,
-      ciGithub: options.ciGithub,
+      ciProvider: options.ciProvider,
     };
   },
 
