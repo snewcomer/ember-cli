@@ -1,5 +1,7 @@
 'use strict';
 
+const fs = require('fs-extra');
+const path = require('path');
 const stringUtil = require('ember-cli-string-utils');
 const chalk = require('chalk');
 const { isExperimentEnabled } = require('../../lib/experiments');
@@ -52,14 +54,7 @@ module.exports = {
     };
   },
 
-  beforeInstall(options) {
-    // this may be extended to other providers.  Current option other than travis is github actions
-    if (options.ciProvider !== 'travis') {
-      this.filesToRemove.push('.travis.yml');
-    } else {
-      this.filesToRemove.push('.github/workflows/ci.yml');
-    }
-
+  beforeInstall() {
     const version = require('../../package.json').version;
     const prependEmoji = require('../../lib/utilities/prepend-emoji');
 
@@ -67,4 +62,9 @@ module.exports = {
     this.ui.writeLine('');
     this.ui.writeLine(prependEmoji('✨', `Creating a new Ember app in ${chalk.yellow(process.cwd())}:`));
   },
+
+  afterInstall(options) {
+    let pathToRemove = options.ciProvider !== 'travis' ? '.travis.yml' : '.github/workflows/ci.yml';
+    fs.removeSync(`${this.project.root}/${pathToRemove}`);
+  }
 };

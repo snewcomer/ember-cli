@@ -104,13 +104,6 @@ module.exports = {
   },
 
   beforeInstall(options) {
-    // this may be extended to other providers.  Current option other than travis is github actions
-    if (options.ciProvider !== 'travis') {
-      this.filesToRemove.push('.travis.yml');
-    } else {
-      this.filesToRemove.push('.github/workflows/ci.yml');
-    }
-
     const version = require('../../package.json').version;
     const prependEmoji = require('../../lib/utilities/prepend-emoji');
 
@@ -119,13 +112,16 @@ module.exports = {
     this.ui.writeLine(prependEmoji('✨', `Creating a new Ember addon in ${chalk.yellow(process.cwd())}:`));
   },
 
-  afterInstall() {
+  afterInstall(options) {
     let packagePath = path.join(this.path, 'files', 'package.json');
     let bowerPath = path.join(this.path, 'files', 'bower.json');
 
     [packagePath, bowerPath].forEach((filePath) => {
       fs.removeSync(filePath);
     });
+
+    let pathToRemove = options.ciProvider !== 'travis' ? '.travis.yml' : '.github/workflows/ci.yml';
+    fs.removeSync(`${this.project.root}/${pathToRemove}`);
   },
 
   locals(options) {

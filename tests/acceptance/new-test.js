@@ -475,6 +475,8 @@ describe('Acceptance: ember new', function () {
         expect(file(filePath)).to.equal(file(path.join(__dirname, '../fixtures', fixturePath, filePath)));
       });
 
+      expect(file('.github/workflows/ci.yml')).to.not.exist;
+
       if (isExperimentEnabled('EMBROIDER')) {
         fixturePath = `${namespace}/embroider`;
       }
