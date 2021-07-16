@@ -103,7 +103,7 @@ module.exports = {
     return new FileInfo(options);
   },
 
-  beforeInstall(options) {
+  beforeInstall() {
     const version = require('../../package.json').version;
     const prependEmoji = require('../../lib/utilities/prepend-emoji');
 
