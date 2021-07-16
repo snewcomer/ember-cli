@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('fs-extra');
-const path = require('path');
 const stringUtil = require('ember-cli-string-utils');
 const chalk = require('chalk');
 const { isExperimentEnabled } = require('../../lib/experiments');
